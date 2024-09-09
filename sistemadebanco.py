@@ -1,7 +1,9 @@
+import datetime
+
 total_conta = 0
 depositos = []
 saques = []
-LIMITE_DE_SAQUES = 3
+LIMITE_DE_SAQUES_DIARIO = 10
 numero_de_saques = 0
 
 
@@ -10,7 +12,7 @@ def Deposito ():
 
     valor_deposito = float(input("informe o valor a ser depositado: "))
     total_conta += valor_deposito
-    depositos.append(valor_deposito)
+    depositos.append({valor_deposito, datetime.datetime.now()})
     print("Deposito realizado com sucesso")
 
 
@@ -21,7 +23,7 @@ def Saque():
         print ("impossivel sacar, sem saldo na conta")
         return
 
-    if LIMITE_DE_SAQUES == numero_de_saques:
+    if LIMITE_DE_SAQUES_DIARIO == numero_de_saques:
         print ("Impossivel sacar, limite diario de saques atingido")
         return
 
@@ -33,15 +35,21 @@ def Saque():
 
     else:
         total_conta -= valor_saque
-        saques.append(valor_saque)
+        saques.append({valor_saque, datetime.datetime.now()})
         print ("saque realizado com sucesso")
         numero_de_saques += 1
 
 def Extrato():
-    print (f"""Valor total na conta é R$ {total_conta:.2f}
-saques: {saques:.2f}
-depositos: {depositos:.2f}
-""")
+    print (f"Valor total na conta é R$ {total_conta:.2f}")
+    for key, val in saques:
+        print (f"foi sacado R${key:.2f} ás {val}")
+    for key, val in depositos:
+        print (f"foi depositado R${key:.2f} ás {val}")
+
+           
+# saques: {saques.:.2f}
+# depositos: {depositos:.2f}
+# """)
 
 
 operacao = ""
